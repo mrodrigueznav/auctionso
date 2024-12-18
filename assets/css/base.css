@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #2563EB;
+  --secondary-color: #3B82F6;
+}
+
+.dark {
+  --primary-color: #1D4ED8;
+  --secondary-color: #2563EB;
+}
+
+.blue {
+  --primary-color: #0EA5E9;
+  --secondary-color: #38BDF8;
+}
+
+body {
+  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200;
+}
