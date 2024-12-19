@@ -207,7 +207,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useUserStore } from '~/stores/user'
+import { useAuthStore } from '~/stores/auth'
 import { 
   CameraIcon, 
   UserIcon,
@@ -220,7 +220,8 @@ import {
   ArrowRightIcon
 } from '@heroicons/vue/24/outline'
 
-const user = useUserStore()
+const fullUser = useAuthStore()
+const user = fullUser.user
 const isSaving = ref(false)
 const initialFormState = {
   name: user.name,

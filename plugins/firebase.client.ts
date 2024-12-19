@@ -4,22 +4,13 @@ import { getAuth } from 'firebase/auth'
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
 
-  // const firebaseConfig = {
-  //   apiKey: config.public.firebaseApiKey,
-  //   authDomain: config.public.firebaseAuthDomain,
-  //   projectId: config.public.firebaseProjectId,
-  //   storageBucket: config.public.firebaseStorageBucket,
-  //   messagingSenderId: config.public.firebaseMessagingSenderId,
-  //   appId: config.public.firebaseAppId
-  // }
-
   const firebaseConfig = {
-    apiKey: "AIzaSyBXTNPZ-ccN8aEuUIuV-wfZv8fbAfXMlAM",  
-    authDomain: "auction-fe52b.firebaseapp.com",  
-    projectId: "auction-fe52b",  
-    storageBucket: "auction-fe52b.firebasestorage.app",  
-    messagingSenderId: "402956063132",  
-    appId: "1:402956063132:web:6d9d8d2f7849568d1e7859"  
+    apiKey: config.public.FIREBASE_API_KEY,
+    authDomain: config.public.FIREBASE_AUTH_DOMAIN,
+    projectId: config.public.FIREBASE_PROJECT_ID,
+    storageBucket: config.public.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: config.public.FIREBASE_MESSAGING_SENDER_ID,
+    appId: config.public.FIREBASE_APP_ID
   }
 
   const app = initializeApp(firebaseConfig)

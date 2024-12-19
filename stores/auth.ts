@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia'
 import type { User } from '~/types/user'
+import { useApi } from '~/composables/useApi'
+
+const { checkUser, createUser,  error, isLoading } = useApi()
 
 interface AuthState {
   user: User | null
@@ -31,6 +34,7 @@ export const useAuthStore = defineStore('auth', {
       }
 
       const data = await response.json()
+      console.log('LOL', data)
       this.setAuth(data)
     },
 
@@ -44,6 +48,28 @@ export const useAuthStore = defineStore('auth', {
       window.location.href = 'https://api.example.com/auth/facebook'
     },
 
+    async getUser( uid: string, email: string, name: string, photoURL: string, accessToken: string) {
+  
+      const localUser = await checkUser(
+        uid, 
+        email,
+        name,
+        photoURL,
+        accessToken,
+      )
+      return localUser
+
+    },
+
+    async createAppUser( uid: string, email: string, token: string) {
+      const localUser = await createUser(
+        uid, 
+        email,
+        token
+      )
+      return localUser
+    },
+
     async logout() {
       this.user = null
       this.token = null
@@ -55,6 +81,10 @@ export const useAuthStore = defineStore('auth', {
       this.user = data.user
       this.token = data.token
       this.isAuthenticated = true
+      // Use localstorage if client
+      if (process.client) {
+        localStorage.setItem('auth', 'true')
+      }
     }
   }
 })

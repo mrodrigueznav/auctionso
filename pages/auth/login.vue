@@ -74,15 +74,15 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useAuthStore } from '~/stores/auth'
+import { useFirebaseAuth } from '~/composables/useFirebaseAuth'
 
 definePageMeta({
   layout: 'empty'
 })
 
 const auth = useAuthStore()
-const router = useRouter()
+const { signInWithEmail, isLoading, error } = useFirebaseAuth()
 
-const isLoading = ref(false)
 const form = reactive({
   email: '',
   password: '',
@@ -100,8 +100,8 @@ const handleSubmit = async () => {
   isLoading.value = true
 
   try {
-    await auth.login(form)
-    router.push('/')
+    await signInWithEmail(form.email, form.password)
+    // router.push('/')
   } catch (error: any) {
     if (error.field) {
       errors[error.field] = error.message

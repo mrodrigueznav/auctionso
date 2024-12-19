@@ -40,11 +40,73 @@ interface UpdateItemPayload {
 }
 
 export function useApi() {
-  // const baseUrl = 'http://localhost:3001/api'
+  const baseUrl = 'http://localhost:3001/api'
   // const baseUrl = 'https://api.example
-  const baseUrl = 'https://wontauct.onrender.com/api'
+  // const baseUrl = 'https://wontauct.onrender.com/api'
   const error = ref<string | null>(null)
   const isLoading = ref(false)
+
+  const checkUser = async (userId: string, email: string, name: string, photoURL: string, accessToken: string): Promise<any> => {
+    isLoading.value = true
+    error.value = null
+    
+    try {
+      const response = await fetch(`${baseUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          userId,
+          name,
+          photoURL,
+        }),
+      })
+      console.log(response)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return await response.json()
+    } catch (e) {
+      if (e instanceof Error && e.message.includes('404')) {
+        return createUser(userId, email)
+      } else {
+        error.value = e instanceof Error ? e.message : 'An error occurred'
+        throw e
+      }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const createUser = async (userId: string, email: string, token: string): Promise<any> => {
+    isLoading.value = true
+    error.value = null
+    
+    try {
+      const response = await fetch(`${baseUrl}/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          email,
+          userId
+        }),
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return await response.json()
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'An error occurred'
+      throw e
+    } finally {
+      isLoading.value = false
+    }
+  }
 
   const getItems = async (): Promise<ApiItem[]> => {
     isLoading.value = true
@@ -89,8 +151,11 @@ export function useApi() {
     try {
       const response = await fetch(`${baseUrl}/items`, {
         method: 'POST',
-        headers,
-        body: payload,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
       })
       
       if (!response.ok) {
@@ -157,6 +222,8 @@ export function useApi() {
     createItem,
     deleteItem,
     updateItem,
+    checkUser,
+    createUser,
     error,
     isLoading
   }
