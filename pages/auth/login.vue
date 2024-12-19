@@ -52,9 +52,9 @@
               <span class="ml-2 text-sm">Recordarme</span>
             </label>
 
-            <NuxtLink to="/auth/forgot-password" class="text-sm text-primary hover:text-primary-dark">
+            <!-- <NuxtLink to="/auth/forgot-password" class="text-sm text-primary hover:text-primary-dark">
               ¿Olvidaste tu contraseña?
-            </NuxtLink>
+            </NuxtLink> -->
           </div>
 
           <button
