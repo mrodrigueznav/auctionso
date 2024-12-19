@@ -40,9 +40,7 @@ interface UpdateItemPayload {
 }
 
 export function useApi() {
-  const baseUrl = 'http://localhost:3001/api'
-  // const baseUrl = 'https://api.example
-  // const baseUrl = 'https://wontauct.onrender.com/api'
+  const baseUrl = 'https://wontauct.onrender.com/api'
   const error = ref<string | null>(null)
   const isLoading = ref(false)
 
