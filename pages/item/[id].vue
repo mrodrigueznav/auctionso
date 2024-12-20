@@ -69,7 +69,7 @@
             </p>
           </div>
           <div v-else>
-            <BiddingPanel :game="game" />
+            <!-- <BiddingPanel :game="game" /> -->
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export const useLocale = () => {
     'Complex': 'Complejo',
     'Medium': 'Medio',
     'Heavy': 'Pesado',
-    'Like New': 'Como Nuevo',
+    'Like New': 'Abierto',
     'Excellent': 'Excelente',
     'Very Good': 'Muy Bueno',
     'New': 'Nuevo',

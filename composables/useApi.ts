@@ -61,7 +61,6 @@ export function useApi() {
           photoURL,
         }),
       })
-      console.log(response)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -142,18 +141,14 @@ export function useApi() {
     }
   }
 
-  const createItem = async (payload: FormData, headers: any) => {
+  const createItem = async (formData: FormData) => {
     isLoading.value = true
     error.value = null
     
     try {
       const response = await fetch(`${baseUrl}/items`, {
         method: 'POST',
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload),
+        body: formData, // Send FormData directly without Content-Type header
       })
       
       if (!response.ok) {
@@ -191,14 +186,14 @@ export function useApi() {
     }
   }
 
-  const updateItem = async (id: number, payload: FormData) => {
+  const updateItem = async (id: number, formData: FormData) => {
     isLoading.value = true
     error.value = null
     
     try {
       const response = await fetch(`${baseUrl}/items/${id}`, {
         method: 'PUT',
-        body: payload,
+        body: formData, // Send FormData directly without Content-Type header
       })
       
       if (!response.ok) {

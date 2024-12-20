@@ -11,7 +11,7 @@
               {{ t('Browse Items') }}
             </NuxtLink>
             <NuxtLink to="/live" class="text-gray-900 dark:text-white hover:text-primary">
-              {{ t('Live Auction') }}
+              <!-- {{ t('Live Auction') }} -->
             </NuxtLink>
           </div>
           <div class="flex items-center space-x-4">

@@ -13,7 +13,7 @@
         <span class="text-gray-800 dark:text-gray-200">{{ user.name }}</span>
       </template>
       <template v-else>
-        <button @click="goToLogin">Ingresar</button>
+        <!-- <button @click="goToLogin">Ingresar</button> -->
       </template>
       <ChevronDownIcon class="w-4 h-4 text-gray-500" />
     </button>

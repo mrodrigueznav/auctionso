@@ -109,8 +109,6 @@
                   class="w-full px-4 py-2 rounded-lg border dark:bg-gray-700 dark:border-gray-600">
                   <option value="es">Espanol</option>
                   <option value="en">Ingles</option>
-                  <!-- <option value="fr"">Muy Bueno</option> -->
-                  <!-- <option value="ge">Bueno</option> -->
                 </select>
               </div>
 
@@ -167,6 +165,7 @@ import { ref, reactive } from 'vue'
 import BGGRating from '~/components/BGGRating.vue';
 import { useApi } from '~/composables/useApi'
 import { searchBGGGame, getBGGGameData } from '~/utils/bggApi'
+import { createGameFormData } from '~/utils/form-helpers'
 
 const router = useRouter()
 const api = useApi()
@@ -189,12 +188,13 @@ const gameData = reactive({
   bggRating: 0,
   publisher: 'Desconocido',
   releaseYear: 0,
-  images: [] as File[]
+  imagesToDelete: [],
+  existingImages: [],
+  newImages: [] as File[]
 })
 
 const imagePreviews = ref<string[]>([])
 const bggPublishers = ref<{ publisher: string }[]>([])
-
 
 const searchBGG = async () => {
   if (!searchQuery.value) return
@@ -238,9 +238,9 @@ const selectGame = async (result: { id: string; name: string }) => {
 const handleImageUpload = (event: Event) => {
   const files = (event.target as HTMLInputElement).files
   if (files) {
-    for (let i = 0; i < files.length && gameData.images.length < 10; i++) {
+    for (let i = 0; i < files.length && gameData.newImages.length < 10; i++) {
       const file = files[i]
-      gameData.images.push(file)
+      gameData.newImages.push(file)
       const reader = new FileReader()
       reader.onload = (e) => {
         if (e.target?.result) {
@@ -253,32 +253,15 @@ const handleImageUpload = (event: Event) => {
 }
 
 const removeImage = (index: number) => {
-  gameData.images.splice(index, 1)
+  gameData.newImages.splice(index, 1)
   imagePreviews.value.splice(index, 1)
 }
 
 const saveGame = async () => {
-  const formData = new FormData()
-  formData.append('name', gameData.name)
-  formData.append('description', gameData.description)
-  formData.append('startingPrice', gameData.startingPrice.toString())
-  formData.append('msrp', gameData.msrp.toString())
-  formData.append('condition', gameData.condition)
-  formData.append('language', gameData.language)
-  formData.append('bggRating', gameData.bggRating.toString())
-  formData.append('playerCount', gameData.playerCount)
-  formData.append('publisher', gameData.publisher)
-  formData.append('releaseYear', gameData.releaseYear.toString())
-
-  gameData.images.forEach((image) => {
-    formData.append('images', image)
-  })
-
+  const formData = createGameFormData(gameData)
+  
   try {
-    await api.createItem(formData, {
-      // No need to set 'Content-Type' header for FormData
-    })
-
+    await api.createItem(formData)
     router.push('/admin')
   } catch (e) {
     error.value = api.error.value || 'Error saving game'
